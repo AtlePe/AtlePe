@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Project Status</title>
+  <script>
+    const project="AtlePe/AtlePe";
+    async function fetchRepoData() {
+      const response = await fetch(`https://api.github.com/${project}`);
+      const repoData = await response.json();
+      document.getElementById('repo-name').textContent = repoData.name;
+      document.getElementById('repo-description').textContent = repoData.description;
+      document.getElementById('repo-stars').textContent = `⭐ ${repoData.stargazers_count}`;
+    }
+
+    async function fetchContributors() {
+      const response = await fetch(`https://api.github.com/repos/${project}/contributors`);
+      const contributors = await response.json();
+      const contributorsList = document.getElementById('contributors-list');
+      contributorsList.innerHTML = '';
+      contributors.forEach(contributor => {
+        const li = document.createElement('li');
+        li.textContent = contributor.login;
+        contributorsList.appendChild(li);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchRepoData();
+      fetchContributors();
+    });
+  </script>
+</head>
+<body>
+<h1 id="repo-name">Loading...</h1>
+<p id="repo-description">Loading...</p>
+<p id="repo-stars">Loading...</p>
+<h2>Contributors</h2>
+<ul id="contributors-list">Loading...</ul>
+</body>
+</html>
